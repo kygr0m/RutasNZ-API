@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RutasNZ-API", "RutasNZ-API\RutasNZ-API.csproj", "{747D1964-744D-4990-B273-1475EE24F83B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{747D1964-744D-4990-B273-1475EE24F83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{747D1964-744D-4990-B273-1475EE24F83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{747D1964-744D-4990-B273-1475EE24F83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{747D1964-744D-4990-B273-1475EE24F83B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4268DE8B-5F81-44EB-ADE6-8AEA34EAD6F5}
+	EndGlobalSection
+EndGlobal

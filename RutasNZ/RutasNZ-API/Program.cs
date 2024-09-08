@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RutasNZ_API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Dependency Injection DBConnectionString
+builder.Services.AddDbContext<RutasDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionRutas")));
 
 var app = builder.Build();
 

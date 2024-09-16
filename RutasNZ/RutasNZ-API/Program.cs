@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RutasNZ_API.Data;
+using RutasNZ_API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,16 @@ builder.Services.AddSwaggerGen();
 
 // Dependency Injection DBConnectionString
 builder.Services.AddDbContext<RutasDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionRutas")));
+
+// Inyeccion interfaz Region usando la implementacion
+builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+
+/* 
+ 
+ AddScoped: This method registers a service with the DI container,
+ specifying the lifetime of the service as scoped. 
+ A scoped service is created once per request and is disposed of at the end of the request.
+ */
 
 var app = builder.Build();
 

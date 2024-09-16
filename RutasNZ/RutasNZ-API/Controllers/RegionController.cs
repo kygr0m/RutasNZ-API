@@ -5,6 +5,7 @@ using RutasNZ_API.Data;
 using RutasNZ_API.Models.Domain;
 using RutasNZ_API.Models.DTO;
 using RutasNZ_API.Models.DTO.Region;
+using RutasNZ_API.Repositories;
 using System.Runtime.Intrinsics.Arm;
 
 namespace RutasNZ_API.Controllers
@@ -13,17 +14,19 @@ namespace RutasNZ_API.Controllers
     [ApiController]
     public class RegionController : ControllerBase
     {
-        private RutasDbContext _dbContext;
-        public RegionController(RutasDbContext _dbContext)
+        private readonly RutasDbContext _dbContext;
+        private readonly IRegionRepository _regionRepository;
+        public RegionController(RutasDbContext _dbContext, IRegionRepository _regionRepository)
         {
             this._dbContext = _dbContext;
+            this._regionRepository = _regionRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             // Dominio
-            var regiones = await _dbContext.Regiones.ToListAsync();
+            var regiones = await _regionRepository.GetAllAsync();
 
             // DTO
             var regionesDTO = new List<RegionDto>();
@@ -47,7 +50,7 @@ namespace RutasNZ_API.Controllers
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             // Dominio
-            var region = await _dbContext.Regiones.FirstOrDefaultAsync(x => x.Id_Region == id);
+            var region = await _regionRepository.GetAsync(id);
 
             // DTO 
 
@@ -82,8 +85,7 @@ namespace RutasNZ_API.Controllers
 
             // Usar dominio para crear una region
 
-            await _dbContext.Regiones.AddAsync(dominioRegion); 
-            await _dbContext.SaveChangesAsync();
+            dominioRegion = await _regionRepository.CreateAsync(dominioRegion);
 
             // Dominio a DTO
 
@@ -102,26 +104,26 @@ namespace RutasNZ_API.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
 
-        public async Task<IActionResult> Actualizar([FromRoute] Guid id, [FromBody] ActualizarRegionDto actualizarDto)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] ActualizarRegionDto actualizarDto)
         {
+            // DTO a dominio
+
+            var dominioModeloRegion = new Region
+            {
+                Codigo = actualizarDto.Codigo,
+                Nombre = actualizarDto.Nombre,
+                ImagenRegionUrl = actualizarDto.ImagenRegionUrl
+            };
+
             // Comprobacion si existe 
-            
-            var dominioModeloRegion = await _dbContext.Regiones.FirstOrDefaultAsync(x => x.Id_Region == id);
-            
+
+            dominioModeloRegion = await _regionRepository.UpdateAsync(id, dominioModeloRegion);
             if (dominioModeloRegion == null)
             {
                 return NotFound();
             }
 
-            // Actualizar el dominio con los datos del DTO
-
-            dominioModeloRegion.Codigo = actualizarDto.Codigo;
-            dominioModeloRegion.Nombre = actualizarDto.Nombre;
-            dominioModeloRegion.ImagenRegionUrl = actualizarDto.ImagenRegionUrl;
-
-           await _dbContext.SaveChangesAsync();
-
-            // Pasar el dominio a DTO para returnarlo
+            // Pasar el dominio a DTO para retornarlo
 
             var regionDto = new RegionDto
             {
@@ -132,7 +134,9 @@ namespace RutasNZ_API.Controllers
 
             };
 
-            return Ok(regionDto);
+            return Ok(dominioModeloRegion);
+
+
         }
 
         [HttpDelete]
@@ -142,17 +146,12 @@ namespace RutasNZ_API.Controllers
 
             // Comprobar que exista
 
-            var regionDominio = _dbContext.Regiones.FirstOrDefault(x => x.Id_Region == id);
+            var regionDominio = await _regionRepository.DeleteAsync(id);
 
             if (regionDominio == null)
             {
                 return NotFound();
             }
-
-            // Borrar 
-
-            _dbContext.Regiones.Remove(regionDominio);
-            await _dbContext.SaveChangesAsync();
 
             var regionDto = new RegionDto
             {

@@ -20,21 +20,21 @@ namespace RutasNZ_API.Repositories
             {
                 try
                 {
-                    // Retrieve the Region entity
+                    // Recoger region
                     var region = await dbcontext.Regiones.FindAsync(ruta.Id_Region);
                     if (region == null)
                     {
                         throw new InvalidOperationException($"Region with Id_Region {ruta.Id_Region} does not exist");
                     }
 
-                    // Retrieve the Dificultad entity
+                    // Recoger dificultad
                     var dificultad = await dbcontext.Dificultades.FindAsync(ruta.Id_Dificultad);
                     if (dificultad == null)
                     {
                         throw new InvalidOperationException($"Dificultad with Id_Dificultad {ruta.Id_Dificultad} does not exist");
                     }
 
-                    // Create the Ruta entity
+                    // Crear una nueva ruta
                     ruta.Region = region;
                     ruta.Dificultad = dificultad;
                     dbcontext.Rutas.Add(ruta);
@@ -53,13 +53,18 @@ namespace RutasNZ_API.Repositories
 
         public async Task<List<Ruta>> GetAllAsync()
         {
-         return await dbcontext.Rutas.ToListAsync();
+         return await dbcontext.Rutas.Include("Dificultad").Include("Region").ToListAsync();
             
         }
 
-        public Task<Ruta?> GetAsync(Guid id)
+        public async Task<Ruta?> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+           return await dbcontext.Rutas
+                .Include("Dificultad")
+                .Include("Region")
+                .FirstOrDefaultAsync(x => x.Id_ruta == id);
+
+
         }
 
         public async Task<Dificultad> GetDificultadAsync(Guid id)

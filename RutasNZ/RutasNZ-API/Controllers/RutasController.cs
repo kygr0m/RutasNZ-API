@@ -26,7 +26,7 @@ namespace RutasNZ_API.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id)
         {
             // Dominio
             var ruta = await rutarepository.GetAsync(id);
@@ -39,6 +39,7 @@ namespace RutasNZ_API.Controllers
                 return NotFound();
             }
             return Ok(mapper.Map<RegionDto>(ruta));
+
         }
 
 
@@ -62,7 +63,7 @@ namespace RutasNZ_API.Controllers
 
             var rutadto = mapper.Map<RutaDTO>(rutadominio);
             // CreatedAtAction >> codigo 201
-            return CreatedAtAction(nameof(Get), new { id = rutadominio.Id_ruta }, rutadto);
+            return CreatedAtAction(nameof(GetAsync), new { id = rutadominio.Id_ruta }, rutadto);
         }
 
 

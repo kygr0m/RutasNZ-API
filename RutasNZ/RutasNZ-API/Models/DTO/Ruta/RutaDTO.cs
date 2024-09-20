@@ -1,4 +1,7 @@
-﻿namespace RutasNZ_API.Models.DTO.Ruta
+﻿using RutasNZ_API.Models.DTO.Dificultad;
+using RutasNZ_API.Models.DTO.Region;
+
+namespace RutasNZ_API.Models.DTO.Ruta
 {
     public class RutaDTO
     {
@@ -9,5 +12,8 @@
         public string? ImagenRutaUrl { get; set; }
         public Guid Id_Dificultad { get; set; }
         public Guid Id_Region { get; set; }
+
+        public RegionDto Region { get; set; }
+        public DificultadDto Dificultad { get; set; }
     }
 }

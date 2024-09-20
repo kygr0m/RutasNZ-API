@@ -2,7 +2,7 @@
 {
     public class RegionDto
     {
-        public Guid Id { get; set; }
+        public Guid Id_Region { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Codigo { get; set; } = string.Empty;
         public string? ImagenUrl { get; set; }

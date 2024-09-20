@@ -33,7 +33,7 @@ namespace RutasNZ_API.Controllers
             var regiones = await _regionRepository.GetAllAsync();
 
             // DTO
-            var regionesDTO = mapper.Map<List<Region>>(regiones);
+            var regionesDTO = mapper.Map<List<RegionDto>>(regiones);
 
             return Ok(regionesDTO);
         }
@@ -49,7 +49,7 @@ namespace RutasNZ_API.Controllers
             var region = await _regionRepository.GetAsync(regionId);
 
             // DTO
-            var regionDTO = mapper.Map<Region>(region);
+            var regionDTO = mapper.Map<RegionDto>(region);
 
             if (region == null)
             {
@@ -69,7 +69,7 @@ namespace RutasNZ_API.Controllers
             dominioRegion = await _regionRepository.CreateAsync(dominioRegion);
 
             // Dominio a DTO
-            var regionDTO = mapper.Map<Region>(dominioRegion);
+            var regionDTO = mapper.Map<RegionDto>(dominioRegion);
 
             // CreatedAtAction >> codigo 201
             return CreatedAtAction(nameof(Get), new { id = regionDTO.Id_Region.ToString() }, regionDTO);
@@ -94,7 +94,7 @@ namespace RutasNZ_API.Controllers
             }
 
             // Pasar el dominio a DTO para retornarlo
-            var regionDTO = mapper.Map<Region>(dominioModeloRegion);
+            var regionDTO = mapper.Map<RegionDto>(dominioModeloRegion);
 
             return Ok(regionDTO);
         }
@@ -115,7 +115,7 @@ namespace RutasNZ_API.Controllers
             }
 
             // Pasar el dominio a DTO para retornarlo
-            var regionDTO = mapper.Map<Region>(regionDominio);
+            var regionDTO = mapper.Map<RegionDto>(regionDominio);
 
             return Ok(regionDTO);
         }

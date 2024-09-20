@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RutasNZ_API.Data;
 using RutasNZ_API.Models.Domain;
+using RutasNZ_API.Models.DTO.Region;
+using RutasNZ_API.Models.DTO.Ruta;
+using RutasNZ_API.Repositories;
 
 namespace RutasNZ_API.Controllers
 {
@@ -10,30 +14,52 @@ namespace RutasNZ_API.Controllers
     public class RutasController : ControllerBase
 
     {
-        private RutasDbContext _dbContext;
-        public RutasController(RutasDbContext _dbContext)
-        { 
-            this._dbContext = _dbContext;
+
+        private readonly IMapper mapper;
+        private readonly IRutaRepository rutarepository;
+
+        public RutasController(IMapper mapper, IRutaRepository rutarepository)
+        {
+            this.mapper = mapper;
+            this.rutarepository = rutarepository;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var rutas = new List<Ruta>()
+            // Dominio
+            var ruta = await rutarepository.GetAsync(id);
+
+            // DTO 
+
+
+            if (ruta == null)
             {
-                new Ruta
-                {
-                    Id_ruta = Guid.NewGuid(),
-                    Nombre = "Prueba",
-                    Descripcion = "Prueba",
-                    LongitudKm = 200,
-                    ImagenRutaUrl = "Prueba",
-                    Id_Dificultad = Guid.NewGuid(),
-                    Id_Region = Guid.NewGuid()
-                }
-            };
-            return Ok(rutas);
+                return NotFound();
+            }
+            return Ok(mapper.Map<RegionDto>(ruta));
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AgregarRutaDTO agregarRutaDTO)
+        {
+            // Dominio
+            var rutadominio = mapper.Map<Ruta>(agregarRutaDTO);
+            var dificultad = await rutarepository.GetDificultadAsync(agregarRutaDTO.Id_Dificultad);
+            var region = await rutarepository.GetRegionAsync(agregarRutaDTO.Id_Region);
+            rutadominio.Dificultad = dificultad;
+            rutadominio.Region = region;
+            rutadominio = await rutarepository.CreateAsync(rutadominio);
+
+            var rutadto = mapper.Map<RutaDTO>(rutadominio);
+            // CreatedAtAction >> codigo 201
+            return CreatedAtAction(nameof(Get), new { id = rutadominio.Id_ruta }, rutadto);
+        }
+
+
     };
            
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RutasNZ_API.Data;
@@ -16,10 +17,13 @@ namespace RutasNZ_API.Controllers
     {
         private readonly RutasDbContext _dbContext;
         private readonly IRegionRepository _regionRepository;
-        public RegionController(RutasDbContext _dbContext, IRegionRepository _regionRepository)
+        private readonly IMapper mapper;
+        public RegionController(RutasDbContext _dbContext, IRegionRepository _regionRepository,
+            IMapper mapper)
         {
             this._dbContext = _dbContext;
             this._regionRepository = _regionRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -29,143 +33,91 @@ namespace RutasNZ_API.Controllers
             var regiones = await _regionRepository.GetAllAsync();
 
             // DTO
-            var regionesDTO = new List<RegionDto>();
-            foreach (var region in regiones)
-            {
-                regionesDTO.Add(new RegionDto()
-                {
-                    Id = region.Id_Region,
-                    Nombre = region.Nombre,
-                    Codigo = region.Codigo,
-                    ImagenUrl = region.ImagenRegionUrl
-                });
-            }
-
+            var regionesDTO = mapper.Map<List<Region>>(regiones);
 
             return Ok(regionesDTO);
         }
 
         [HttpGet]
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        [Route("{id}")]
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
+            // Convert the route parameter to a Guid
+            Guid regionId = Guid.Parse(id);
+
             // Dominio
-            var region = await _regionRepository.GetAsync(id);
+            var region = await _regionRepository.GetAsync(regionId);
 
-            // DTO 
+            // DTO
+            var regionDTO = mapper.Map<Region>(region);
 
-            var regionDto = new RegionDto()
-            {
-                Id = region.Id_Region,
-                Nombre = region.Nombre,
-                Codigo = region.Codigo,
-                ImagenUrl = region.ImagenRegionUrl
-
-            };
-
-            if (regionDto == null)
+            if (region == null)
             {
                 return NotFound();
             }
-            return Ok(regionDto);
+
+            return Ok(regionDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]  AgregarRegionDTO agregarregionDto)
+        public async Task<IActionResult> Create([FromBody] AgregarRegionDTO agregarregionDto)
         {
             // Convertir DTO a modelo de dominio
-
-            var dominioRegion = new Region
-            {
-                Codigo = agregarregionDto.Codigo,
-                Nombre = agregarregionDto.Nombre,
-                ImagenRegionUrl = agregarregionDto.ImagenUrl
-
-            };
+            var dominioRegion = mapper.Map<Region>(agregarregionDto);
 
             // Usar dominio para crear una region
-
             dominioRegion = await _regionRepository.CreateAsync(dominioRegion);
 
             // Dominio a DTO
+            var regionDTO = mapper.Map<Region>(dominioRegion);
 
-            var regionDTO = new RegionDto
-            {
-                Id = dominioRegion.Id_Region,
-                Codigo = dominioRegion.Codigo,
-                Nombre = dominioRegion.Nombre,
-                ImagenUrl = dominioRegion.ImagenRegionUrl
-            };
             // CreatedAtAction >> codigo 201
-            return CreatedAtAction(nameof(Get), new {id = regionDTO.Id}, regionDTO);
-
+            return CreatedAtAction(nameof(Get), new { id = regionDTO.Id_Region.ToString() }, regionDTO);
         }
 
         [HttpPut]
-        [Route("{id:Guid}")]
-
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] ActualizarRegionDto actualizarDto)
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] ActualizarRegionDto actualizarDto)
         {
+            // Convert the route parameter to a Guid
+            Guid regionId = Guid.Parse(id);
+
             // DTO a dominio
+            var dominioModeloRegion = mapper.Map<Region>(actualizarDto);
 
-            var dominioModeloRegion = new Region
-            {
-                Codigo = actualizarDto.Codigo,
-                Nombre = actualizarDto.Nombre,
-                ImagenRegionUrl = actualizarDto.ImagenRegionUrl
-            };
+            // Comprobacion si existe
+            dominioModeloRegion = await _regionRepository.UpdateAsync(regionId, dominioModeloRegion);
 
-            // Comprobacion si existe 
-
-            dominioModeloRegion = await _regionRepository.UpdateAsync(id, dominioModeloRegion);
             if (dominioModeloRegion == null)
             {
                 return NotFound();
             }
 
             // Pasar el dominio a DTO para retornarlo
+            var regionDTO = mapper.Map<Region>(dominioModeloRegion);
 
-            var regionDto = new RegionDto
-            {
-                Id = dominioModeloRegion.Id_Region,
-                Codigo = dominioModeloRegion.Codigo,
-                Nombre = dominioModeloRegion.Nombre,
-                ImagenUrl = dominioModeloRegion.ImagenRegionUrl
-
-            };
-
-            return Ok(dominioModeloRegion);
-
-
+            return Ok(regionDTO);
         }
 
         [HttpDelete]
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> Borrar([FromRoute]Guid id) 
+        [Route("{id}")]
+        public async Task<IActionResult> Borrar([FromRoute] string id)
         {
+            // Convert the route parameter to a Guid
+            Guid regionId = Guid.Parse(id);
 
             // Comprobar que exista
-
-            var regionDominio = await _regionRepository.DeleteAsync(id);
+            var regionDominio = await _regionRepository.DeleteAsync(regionId);
 
             if (regionDominio == null)
             {
                 return NotFound();
             }
 
-            var regionDto = new RegionDto
-            {
-                Id = regionDominio.Id_Region,
-                Codigo = regionDominio.Codigo,
-                Nombre = regionDominio.Nombre,
-                ImagenUrl = regionDominio.ImagenRegionUrl
+            // Pasar el dominio a DTO para retornarlo
+            var regionDTO = mapper.Map<Region>(regionDominio);
 
-            };
-
-            return Ok(regionDto);
-
+            return Ok(regionDTO);
         }
-
-
     }
 }

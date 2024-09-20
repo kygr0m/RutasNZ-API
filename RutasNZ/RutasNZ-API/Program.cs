@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RutasNZ_API.Data;
+using RutasNZ_API.Mappings;
 using RutasNZ_API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,13 +17,13 @@ builder.Services.AddDbContext<RutasDbContext>(options => options.UseSqlServer(bu
 
 // Inyeccion interfaz Region usando la implementacion
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+builder.Services.AddScoped<IRutaRepository, SQLRutaRepository>();
 
-/* 
- 
- AddScoped: This method registers a service with the DI container,
- specifying the lifetime of the service as scoped. 
- A scoped service is created once per request and is disposed of at the end of the request.
- */
+
+// Agregar los perfiles del automapper al iniciar el programa
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
+
 
 var app = builder.Build();
 

@@ -42,6 +42,12 @@ namespace RutasNZ_API.Controllers
         }
 
 
+        [HttpGet]
+       public async Task<IActionResult> GetAll()
+        {
+            var rutasdominio = await rutarepository.GetAllAsync();
+            return Ok(mapper.Map<List<RutaDTO>>(rutasdominio));
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AgregarRutaDTO agregarRutaDTO)

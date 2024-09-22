@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RutasNZ_API.CustomActionFilters;
 using RutasNZ_API.Data;
 using RutasNZ_API.Models.Domain;
 using RutasNZ_API.Models.DTO.Region;
@@ -27,20 +28,15 @@ namespace RutasNZ_API.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AgregarRutaDTO addWalkRequestDto)
         {
-
-            //Validacion del DTO
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            // Map DTO to Domain Model
+            // Mapear DTO a dominio
             var walkDomainModel = mapper.Map<Ruta>(addWalkRequestDto);
 
             await rutarepository.CreateAsync(walkDomainModel);
 
-            // Map Domain model to DTO
+            // Mapear Dominio a DTO
             return Ok(mapper.Map<RutaDTO>(walkDomainModel));
         }
 
@@ -73,13 +69,10 @@ namespace RutasNZ_API.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute]Guid id, ActualizarRutaDTO actualizarRutaDto) 
         {
-            //Validacion del DTO
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            
             // DTO a dominio
 
             var rutaDominio = mapper.Map<Ruta>(actualizarRutaDto);

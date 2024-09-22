@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RutasNZ_API.CustomActionFilters;
 using RutasNZ_API.Data;
 using RutasNZ_API.Models.Domain;
 using RutasNZ_API.Models.DTO;
@@ -60,13 +61,10 @@ namespace RutasNZ_API.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AgregarRegionDTO agregarregionDto)
         {
-            //Validacion del DTO
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+          
             // Convertir DTO a modelo de dominio
             var dominioRegion = mapper.Map<Region>(agregarregionDto);
 
@@ -82,14 +80,10 @@ namespace RutasNZ_API.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] string id, [FromBody] ActualizarRegionDto actualizarDto)
         {
-            //Validacion del DTO
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+           
             // Convertir el parametetro de la ruta a Guid
             Guid regionId = Guid.Parse(id);
 

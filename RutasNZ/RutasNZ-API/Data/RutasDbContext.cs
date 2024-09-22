@@ -12,6 +12,7 @@ namespace RutasNZ_API.Data
         public DbSet<Dificultad> Dificultades { get; set; }
         public DbSet<Region> Regiones { get; set; }
         public DbSet<Ruta> Rutas { get; set; }
+        public DbSet<Imagen> Imagenes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

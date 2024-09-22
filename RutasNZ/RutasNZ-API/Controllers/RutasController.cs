@@ -58,11 +58,13 @@ namespace RutasNZ_API.Controllers
         }
 
 
-       [HttpGet]
-       public async Task<IActionResult> GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] string? filtro, [FromQuery] string? queryFiltrado,
+                                         [FromQuery] string? ordenarPor, [FromQuery] bool? esAscendente,
+                                         [FromQuery] int numeroPaginas = 1, [FromQuery] int tamanioPaginas = 10 )
         {
-            var rutasdominio = await rutarepository.GetAllAsync();
-            return Ok(mapper.Map<List<RutaDTO>>(rutasdominio));
+            var rutasdominio = await rutarepository.GetAllAsync(filtro, queryFiltrado, ordenarPor, esAscendente ?? true, numeroPaginas, tamanioPaginas ); 
+            return Ok(mapper.Map<List<RutaDTO>>(rutasdominio));                                     // si es null a ponlo true
         }
 
       

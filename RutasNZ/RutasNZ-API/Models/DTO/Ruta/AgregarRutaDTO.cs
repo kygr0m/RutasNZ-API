@@ -14,7 +14,7 @@ namespace RutasNZ_API.Models.DTO.Ruta
         public string Descripcion { get; set; }
         [Required]
         [Range(0,120)]
-        public double LongitudKm { get; set; }
+        public double LongitudKm { get; set; } 
         public string? ImagenRutaUrl { get; set; }
         [Required]
         public Guid Id_Dificultad { get; set; }

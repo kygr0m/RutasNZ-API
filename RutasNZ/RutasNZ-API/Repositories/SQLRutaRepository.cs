@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using RutasNZ_API.Data;
 using RutasNZ_API.Models.Domain;
 
@@ -34,10 +35,56 @@ namespace RutasNZ_API.Repositories
 
         }
 
-        public async Task<List<Ruta>> GetAllAsync()
+        public async Task<List<Ruta>> GetAllAsync(string? filtro = null, string? queryFiltro = null,
+                                                  string? ordenarPor = null, bool esAcendente = true,
+                                                  int numeroPaginas = 1, int tamanioPaginas = 10)
         {
-         return await dbcontext.Rutas.Include("Dificultad").Include("Region").ToListAsync();
-            
+            // Filtrado por nombre y longitud
+            var rutas = dbcontext.Rutas.Include("Dificultad").Include("Region").AsQueryable();
+
+            //Filtrado
+            if (!string.IsNullOrWhiteSpace(filtro) && !string.IsNullOrWhiteSpace(queryFiltro))
+            {
+                if (filtro.Equals("Nombre", StringComparison.OrdinalIgnoreCase)) //   nomBre, NOMbre
+                {
+                    rutas = rutas.Where(x => x.Nombre.Contains(queryFiltro));
+                }
+                else if (filtro.Equals("LongitudKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (double.TryParse(queryFiltro, out double longitud))
+                    {
+                        rutas = rutas.Where(x => x.LongitudKm == longitud);
+                    }
+                    else
+                    {
+                        return new List<Ruta>();
+                    }
+                }
+                else
+                {
+                    return new List<Ruta>();
+                }
+            }
+
+            // Ordenacion
+
+            if (!string.IsNullOrWhiteSpace(ordenarPor))
+            { 
+                if (ordenarPor.Equals("Nombre", StringComparison.OrdinalIgnoreCase))
+                {
+                    rutas  = esAcendente ? rutas.OrderBy(x => x.Nombre) : rutas.OrderByDescending(x => x.Nombre);
+                }
+                else if (ordenarPor.Equals("LongitudKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    rutas = esAcendente ? rutas.OrderBy(x => x.LongitudKm) : rutas.OrderByDescending(x => x.LongitudKm);
+                }
+            }
+
+            //  Paginacion
+
+            var saltarResultado = (numeroPaginas - 1) * tamanioPaginas;             
+
+            return await rutas. Skip(saltarResultado).Take(tamanioPaginas).ToListAsync();
         }
 
         public async Task<Ruta?> GetAsync(Guid id)

@@ -42,7 +42,7 @@ namespace RutasNZ_API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get([FromRoute] string id)
         {
-            // Convert the route parameter to a Guid
+            // Convertir el parametetro de la ruta a Guid
             Guid regionId = Guid.Parse(id);
 
             // Dominio
@@ -62,6 +62,11 @@ namespace RutasNZ_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AgregarRegionDTO agregarregionDto)
         {
+            //Validacion del DTO
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             // Convertir DTO a modelo de dominio
             var dominioRegion = mapper.Map<Region>(agregarregionDto);
 
@@ -79,7 +84,13 @@ namespace RutasNZ_API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] string id, [FromBody] ActualizarRegionDto actualizarDto)
         {
-            // Convert the route parameter to a Guid
+            //Validacion del DTO
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Convertir el parametetro de la ruta a Guid
             Guid regionId = Guid.Parse(id);
 
             // DTO a dominio
@@ -103,7 +114,7 @@ namespace RutasNZ_API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Borrar([FromRoute] string id)
         {
-            // Convert the route parameter to a Guid
+            // Convertir el parametetro de la ruta a Guid
             Guid regionId = Guid.Parse(id);
 
             // Comprobar que exista

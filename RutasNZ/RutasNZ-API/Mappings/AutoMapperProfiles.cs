@@ -17,6 +17,8 @@ namespace RutasNZ_API.Mappings
             CreateMap<AgregarRutaDTO, Ruta>().ReverseMap();
             CreateMap<Ruta, RutaDTO>().ReverseMap();
             CreateMap<Dificultad, DificultadDto>().ReverseMap();
+            CreateMap<ActualizarRutaDTO, Ruta>().ReverseMap();
+
 
 
             CreateMap<Ruta, RegionDto>()

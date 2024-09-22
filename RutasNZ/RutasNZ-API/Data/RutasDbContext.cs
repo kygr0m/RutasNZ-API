@@ -7,15 +7,12 @@ namespace RutasNZ_API.Data
     {
         public RutasDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
-            
         }
 
         public DbSet<Dificultad> Dificultades { get; set; }
         public DbSet<Region> Regiones { get; set; }
         public DbSet<Ruta> Rutas { get; set; }
 
-
-       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -49,7 +46,7 @@ namespace RutasNZ_API.Data
                     Codigo = "MD",
                     ImagenRegionUrl = "https://images.pexels.com/photos/1500598/pexels-photo-1500598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                 },
-               new Region()
+                new Region()
                 {
                     Id_Region = Guid.Parse("755fff22-bca4-4aa3-96d1-22f337c5a551"),
                     Nombre = "Barcelona",
@@ -58,11 +55,22 @@ namespace RutasNZ_API.Data
                 }
             };
 
+            // Configure relationships
+            modelBuilder.Entity<Ruta>()
+                .HasOne(r => r.Dificultad)
+                .WithMany() // Assuming Dificultad has no navigation property back to Ruta
+                .HasForeignKey(r => r.Id_Dificultad)
+                .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
 
-            // Meter el dummy en la tabla
+            modelBuilder.Entity<Ruta>()
+                .HasOne(r => r.Region)
+                .WithMany() // Assuming Region has no navigation property back to Ruta
+                .HasForeignKey(r => r.Id_Region)
+                .OnDelete(DeleteBehavior.Cascade); // Adjust as necessary
+
+            // Seed data into the tables
             modelBuilder.Entity<Dificultad>().HasData(dificultades);
             modelBuilder.Entity<Region>().HasData(regiones);
-
         }
     }
 }

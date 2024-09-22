@@ -7,7 +7,7 @@ namespace RutasNZ_API.Repositories
         Task<List<Ruta>> GetAllAsync();
         Task<Ruta?> GetAsync(Guid id);
         Task<Ruta> CreateAsync(Ruta ruta);
-        Task<Dificultad> GetDificultadAsync(Guid id);
-        Task<Region> GetRegionAsync(Guid id);
+        Task<Ruta?> UpdateRutaAsync(Guid id, Ruta ruta);
+        Task<Ruta?> DeleteAsync(Guid id);
     }
 }

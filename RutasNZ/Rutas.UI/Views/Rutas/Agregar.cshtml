@@ -1,0 +1,41 @@
+﻿@model Rutas.UI.Models.AgregarRutaVista
+
+<h1 class="mt-3">Agregar Ruta</h1>
+
+<form method="post">
+
+    <div class="mt-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-control" asp-for="Nombre" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">Descripcion</label>
+        <input type="text" class="form-control" asp-for="Descripcion" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">LongitudKm</label>
+        <input type="number" class="form-control" asp-for="LongitudKm" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">ImagenRutaUrl</label>
+        <input type="text" class="form-control" asp-for="ImagenRutaUrl" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">Id_Dificultad</label>
+        <input type="text" class="form-control" asp-for="Id_Dificultad" />
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">Id_Region</label>
+        <input type="text" class="form-control" asp-for="Id_Region" />
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+
+</form>

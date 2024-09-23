@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Rutas.UI.Models.DTO.RegionDto>
+@{
+}
+
+<h1 class="mt-3"> Regiones</h1>
+
+<div class=" d-flex justify-content-end ">
+    <a class="btn btn-secondary" asp-controller="Regiones" asp-action="Agregar"> Agregar Region</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td scope="col">Id</td>
+            <td scope="col">Nombre</td>
+            <td scope="col">Codigo</td>
+            <td scope="col"></td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var region in Model)
+        {
+            <tr>
+                <td scope="row">@region.Id_Region</td>
+                <td scope="row">@region.Nombre</td>
+                <td scope="row">@region.Codigo</td>
+                <td scope="row">
+                    <a asp-controller="Regiones" asp-action="Editar" asp-route-id="@region.Id_Region" class="btn btn-light">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

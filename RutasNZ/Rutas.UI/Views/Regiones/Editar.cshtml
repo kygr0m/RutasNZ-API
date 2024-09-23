@@ -1,0 +1,40 @@
+﻿@model Rutas.UI.Models.DTO.RegionDto
+ 
+@{
+}
+<h1 class="mt-3"> Editar Region</h1>
+
+@if (Model is not null)
+{
+    <form method="post">
+
+        <div class="mt-3">
+            <label class="form-label">Id</label>
+            <input type="text" class="form-control" asp-for="Id_Region" readonly />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Codigo</label>
+            <input type="text" class="form-control" asp-for="Codigo" />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" asp-for="Nombre" />
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">ImagenUrl</label>
+            <input type="text" class="form-control" asp-for="ImagenRegionUrl" />
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" asp-controller="Regiones" asp-action="Eliminar" class="btn btn-danger">Eliminar</button>
+        </div>
+
+
+
+    </form>
+}
+

@@ -1,4 +1,4 @@
-﻿namespace RutasNZ_API.Models.DTO.Region
+﻿namespace Rutas.UI.Models.DTO
 {
     public class RegionDto
     {

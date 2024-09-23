@@ -11,6 +11,6 @@ namespace RutasNZ_API.Models.DTO.Region
         [MinLength(2, ErrorMessage = "El código tiene que contener un mínimo de 3 caracteres")]
         [MaxLength(5, ErrorMessage = "El código tiene que contener un máximo de 5 caracteres")]
         public string Codigo { get; set; } 
-        public string? ImagenUrl { get; set; }
+        public string? ImagenRegionUrl { get; set; }
     }
 }

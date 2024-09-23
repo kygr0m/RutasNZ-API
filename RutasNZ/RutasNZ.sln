@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RutasNZ-API", "RutasNZ-API\RutasNZ-API.csproj", "{747D1964-744D-4990-B273-1475EE24F83B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RutasNZ-API", "RutasNZ-API\RutasNZ-API.csproj", "{747D1964-744D-4990-B273-1475EE24F83B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rutas.UI", "Rutas.UI\Rutas.UI.csproj", "{8C13FC74-A897-4E4A-AB47-0F9EC9284A1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{747D1964-744D-4990-B273-1475EE24F83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{747D1964-744D-4990-B273-1475EE24F83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{747D1964-744D-4990-B273-1475EE24F83B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C13FC74-A897-4E4A-AB47-0F9EC9284A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C13FC74-A897-4E4A-AB47-0F9EC9284A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C13FC74-A897-4E4A-AB47-0F9EC9284A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C13FC74-A897-4E4A-AB47-0F9EC9284A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

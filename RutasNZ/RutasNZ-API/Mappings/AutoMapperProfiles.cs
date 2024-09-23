@@ -24,7 +24,7 @@ namespace RutasNZ_API.Mappings
             CreateMap<Ruta, RegionDto>()
     .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Region.Nombre))
     .ForMember(dest => dest.Codigo, opt => opt.MapFrom(src => src.Region.Codigo))
-    .ForMember(dest => dest.ImagenUrl, opt => opt.MapFrom(src => src.Region.ImagenRegionUrl));
+    .ForMember(dest => dest.ImagenRegionUrl, opt => opt.MapFrom(src => src.Region.ImagenRegionUrl));
 
         }
     }

@@ -53,7 +53,7 @@ namespace RutasNZ_API.Controllers
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<RegionDto>(ruta));
+            return Ok(mapper.Map<RutaDTO>(ruta));
 
         }
 

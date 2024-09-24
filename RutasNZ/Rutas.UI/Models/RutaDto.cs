@@ -1,4 +1,6 @@
-﻿namespace Rutas.UI.Models.DTO
+﻿using Rutas.UI.Models.DTO;
+
+namespace Rutas.UI.Models
 {
     public class RutaDto
     {

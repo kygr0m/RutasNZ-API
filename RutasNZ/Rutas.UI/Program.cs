@@ -31,7 +31,7 @@ namespace Rutas.UI
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Rutas}/{action=Index}/{id?}");
 
             app.Run();
         }

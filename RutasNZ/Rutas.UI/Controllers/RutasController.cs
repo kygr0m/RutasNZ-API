@@ -76,7 +76,8 @@ namespace Rutas.UI.Controllers
             public async Task<IActionResult> Editar(Guid id)
             {
                 var cliente = httpClientFactory.CreateClient();
-                var respuesta = await cliente.GetFromJsonAsync<RutaDto>($"http://localhost:5105/api/Rutas/{id.ToString()}");
+                var ruta_entera = $"http://localhost:5105/api/Rutas/{id}";
+                var respuesta = await cliente.GetFromJsonAsync<RutaDto>(ruta_entera);
 
                 if (respuesta != null)
                 {
